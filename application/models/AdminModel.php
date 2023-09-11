@@ -41,7 +41,7 @@ class AdminModel extends CI_Model
     }
     public function uploadAgendaGallery()
     {
-        $config['upload_path'] = './upload/Agenda/';
+        $config['upload_path'] = './upload/AgendaGallery/';
         $config['allowed_types']  = 'jpg|png|jpeg|mp4|3gp|flv|mkv';
         $config['max_size'] = '15360';
         $config['remove_space'] = TRUE;
