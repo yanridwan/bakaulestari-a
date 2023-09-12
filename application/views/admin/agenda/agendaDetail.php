@@ -69,9 +69,40 @@
                                     <?php $no = 1;
 									if (!empty($agendaDetail)) {
 									foreach($agendaDetail as $aD) : ?>
-                                    <div class="product-image-thumb"><img
-                                            src="<?= base_url('upload/AgendaGallery/') . $aD->agenda_gallery_file?>"
-                                            alt="Product Image"></div>
+                                    <div class="product-image-thumb">
+                                        <?php if(substr($aD->agenda_gallery_file, -3) =='mp4') { ?>
+                                        <video controlsx>
+                                            <source
+                                                src="<?= base_url('upload/AgendaGallery/') . $aD->agenda_gallery_file ?>"
+                                                type="video/webm" />
+                                            Browsermu tidak mendukung tag ini, upgrade donk!
+                                        </video>
+                                        <?php } elseif (substr($aD->agenda_gallery_file, -3) == '3gp') {?>
+                                        <video controls>
+                                            <source
+                                                src="<?= base_url('upload/AgendaGallery/') . $aD->agenda_gallery_file ?>"
+                                                type="video/webm" />
+                                            Browsermu tidak mendukung tag ini, upgrade donk!
+                                        </video>
+                                        <?php } elseif (substr($aD->agenda_gallery_file, -3) == 'flv') {?>
+                                        <video controls>
+                                            <source
+                                                src="<?= base_url('upload/AgendaGallery/') . $aD->agenda_gallery_file ?>"
+                                                type="video/webm" />
+                                            Browsermu tidak mendukung tag ini, upgrade donk!
+                                        </video>
+                                        <?php } elseif (substr($aD->agenda_gallery_file, -3) == 'mkv') {?>
+                                        <video controls>
+                                            <source
+                                                src="<?= base_url('upload/AgendaGallery/') . $aD->agenda_gallery_file ?>"
+                                                type="video/webm" />
+                                            Browsermu tidak mendukung tag ini, upgrade donk!
+                                        </video>
+                                        <?php } else { ?>
+                                        <img src="<?= base_url('upload/AgendaGallery/') . $aD->agenda_gallery_file?>"
+                                            alt="Product Image">
+                                        <?php } ?>
+                                    </div>
                                     <?php endforeach; } else { ?>
                                     <?php } ?>
                                 </div>
@@ -125,6 +156,33 @@
                                                 <tr>
                                                     <td><?= $no++ ?></td>
                                                     <?php if (substr($aD->agenda_gallery_file, -3) == 'mp4') { ?>
+                                                    <td>
+                                                        <video controls>
+                                                            <source
+                                                                src="<?= base_url('upload/AgendaGallery/') . $aD->agenda_gallery_file ?>"
+                                                                type="video/webm" />
+                                                            Browsermu tidak mendukung tag ini, upgrade donk!
+                                                        </video>
+                                                    </td>
+                                                    <?php } elseif (substr($aD->agenda_gallery_file, -3) == '3gp') { ?>
+                                                    <td>
+                                                        <video controls>
+                                                            <source
+                                                                src="<?= base_url('upload/AgendaGallery/') . $aD->agenda_gallery_file ?>"
+                                                                type="video/webm" />
+                                                            Browsermu tidak mendukung tag ini, upgrade donk!
+                                                        </video>
+                                                    </td>
+                                                    <?php } elseif (substr($aD->agenda_gallery_file, -3) == 'flv') { ?>
+                                                    <td>
+                                                        <video controls>
+                                                            <source
+                                                                src="<?= base_url('upload/AgendaGallery/') . $aD->agenda_gallery_file ?>"
+                                                                type="video/webm" />
+                                                            Browsermu tidak mendukung tag ini, upgrade donk!
+                                                        </video>
+                                                    </td>
+                                                    <?php } elseif (substr($aD->agenda_gallery_file, -3) == 'mkv') { ?>
                                                     <td>
                                                         <video controls>
                                                             <source
@@ -215,7 +273,7 @@
         <!-- /.content-wrapper -->
         <!-- modal edit agenda -->
         <?php $no = 0;
-        if(!empty($agendaDetail->agenda_id)){
+         if(!empty($agendaDetail)){
         foreach ($agendaDetail as $asd) : $no++; ?>
         <div class="modal fade" id="edit<?= $asd->agenda_gallery_id ?>">
             <div class="modal-dialog">
@@ -227,7 +285,8 @@
                         </button>
                     </div>
                     <form method="POST" action="<?= site_url('Agenda/editGallery')?>" enctype="multipart/form-data">
-                        <input type="hidden" name="id" value="<?= $asd->agenda_gallery_id ?>">
+                        <input type="hidden" name="galleryid" value="<?= $asd->agenda_gallery_id ?>">
+                        <input type="hidden" name="id" value="<?= $asd->agenda_id ?>">
                         <div class="modal-body">
                             <div class="card-body">
                                 <div class="form-group">
@@ -236,7 +295,7 @@
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" name="gambar">
-                                                <label class="custom-file-label"><?= $asd->agenda_gambar?></label>
+                                                <label class="custom-file-label"><?= $asd->agenda_gallery_file?></label>
                                             </div>
                                         </div>
                                     </div>
@@ -257,8 +316,8 @@
         <?php } ?>
         <!-- Modal Hapus pesan -->
         <?php $no = 0;
-         if(!empty($agendaDetail->agenda_id)){
-            foreach ($agendaDetail as $asd) : $no++; ?>
+         if(!empty($agendaDetail)){
+            foreach ($agendaDetail as $aswd) : $no++; ?>
         <div class="modal fade" id="hapus<?= $asd->agenda_gallery_id ?>">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -268,14 +327,18 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        Apakah Anda Yakin Ingin Menghapus Agenda ini ?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default btn-gradient" data-dismiss="modal">Close</button>
-                        <a href="<?= site_url('Agenda/hapusAgendaGallery/' . $asd->agenda_gallery_id) ?>"><button
-                                type="button" class="btn btn-danger">Hapus</button></a>
-                    </div>
+                    <form method="POST" action="<?= site_url('Agenda/hapusAgendaGallery')?>"
+                        enctype="multipart/form-data">
+                        <input type="hidden" name="galleryid" value="<?= $aswd->agenda_gallery_id ?>">
+                        <input type="hidden" name="id" value="<?= $aswd->agenda_id ?>">
+                        <div class="modal-body">
+                            Apakah Anda Yakin Ingin Menghapus Agenda ini "<?= $aswd->agenda_gallery_file ?>" ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">batal</button>
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

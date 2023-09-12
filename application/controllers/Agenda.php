@@ -84,12 +84,48 @@ class Agenda extends CI_Controller {
         $this->AdminModel->insert('agenda_gallery', $data);
         redirect('Admin/agendaDetail/' . $id);
     }
-    public function hapusAgendaGallery($id)
+    public function editGallery()
     {
-        if ($id == "") {
+        $gambar = $this->AdminModel->uploadAgendaGallery();
+        if (!empty($gambar['file']['file_name'])){
+            $data = array(
+            // 'agenda_tanggal' => $this->input->post('tanggal'),
+            // 'agenda_nama' => $this->input->post('judul'),
+            // 'agenda_deskripsi' => $this->input->post('deskripsi'),
+            'agenda_gallery_file' => $gambar['file']['file_name'],
+            // 'agenda_id' => $this->input->post('id'),
+            // 'agenda_status' => $this->input->post('status'),
+            );
+        } else {
+            $data = array(
+            // 'agenda_tanggal' => $this->input->post('tanggal'),
+            // 'agenda_nama' => $this->input->post('judul'),
+            // 'agenda_deskripsi' => $this->input->post('deskripsi'),
+            'agenda_gallery_file' => $gambar['file']['file_name'],
+            // 'agenda_id' => $this->input->post('id'),
+            // 'agenda_status' => $this->input->post('status'),
+            );
+        }
+
+        $where = array(
+            'agenda_gallery_id' => $this->input->post('galleryid'),
+        );
+
+        $id = $this->input->post('id');
+
+        $this->AdminModel->update('agenda_gallery', $where, $data);
+        redirect('Admin/agendaDetail/' . $id);
+    }
+    public function hapusAgendaGallery()
+    {
+        $where = $this->input->post('galleryid');
+
+        $id = $this->input->post('id');
+        
+        if ($where == "") {
             redirect('Admin/agendaDetail');
         } else {
-            $this->db->where('agenda_gallery_id', $id);
+            $this->db->where('agenda_gallery_id', $where);
             $this->db->delete('agenda_gallery');
             redirect('Admin/agendaDetail/' . $id);
         }
